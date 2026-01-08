@@ -26,7 +26,14 @@ export function Footer() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8">
             <h3 className="font-heading text-xl font-bold uppercase tracking-wide mb-6">Send a Message</h3>
-            <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" className="space-y-4">
+            <form
+              name="contact"
+              method="POST"
+              action="/thank-you"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              className="space-y-4"
+            >
               <input type="hidden" name="form-name" value="contact" />
               <p className="hidden">
                 <label>

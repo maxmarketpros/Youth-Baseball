@@ -67,6 +67,7 @@ export function BookingForm() {
             <form
               name="booking"
               method="POST"
+              action="/thank-you"
               data-netlify="true"
               netlify-honeypot="bot-field"
               className="bg-white rounded-3xl shadow-2xl p-8 sm:p-10"

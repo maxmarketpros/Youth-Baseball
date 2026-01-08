@@ -1,30 +1,12 @@
 "use client"
 
-import { FormEvent, useState } from "react"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Phone, MapPin } from "lucide-react"
-import { submitNetlifyForm } from "@/lib/netlify-forms"
 
 export function Footer() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setStatus("loading")
-
-    try {
-      await submitNetlifyForm(event.currentTarget)
-      setStatus("success")
-      event.currentTarget.reset()
-    } catch (error) {
-      console.error(error)
-      setStatus("error")
-    }
-  }
   return (
     <footer className="bg-primary text-white py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,14 +26,7 @@ export function Footer() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8">
             <h3 className="font-heading text-xl font-bold uppercase tracking-wide mb-6">Send a Message</h3>
-            <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
-              className="space-y-4"
-            >
+            <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" className="space-y-4">
               <input type="hidden" name="form-name" value="contact" />
               <p className="hidden">
                 <label>
@@ -111,17 +86,9 @@ export function Footer() {
               <Button
                 type="submit"
                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-full font-sans font-bold py-6"
-                disabled={status === "loading"}
               >
                 Send Message
               </Button>
-              <div className="mt-2 text-center text-sm font-semibold">
-                {status === "success" && <span className="text-emerald-400">Message sent!</span>}
-                {status === "error" && (
-                  <span className="text-rose-400">Something went wrong — please try again.</span>
-                )}
-                {status === "loading" && <span className="text-muted-foreground">Sending…</span>}
-              </div>
             </form>
           </div>
 
@@ -149,7 +116,7 @@ export function Footer() {
 
             <div className="mt-12 pt-8 border-t border-white/20">
               <p className="font-heading text-2xl font-bold tracking-wider">YOUTH BASEBALL TRAINING</p>
-              <p className="mt-2 text-white/60 font-sans text-sm">© {new Date().getFullYear()} All rights reserved.</p>
+              <p className="mt-2 text-white/60 font-sans text-sm">Ac {new Date().getFullYear()} All rights reserved.</p>
             </div>
           </div>
         </div>

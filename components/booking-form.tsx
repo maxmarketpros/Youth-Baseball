@@ -1,12 +1,31 @@
 "use client"
 
+import { FormEvent, useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Calendar, Clock, User, Mail, Phone, MessageSquare, CheckCircle } from "lucide-react"
+import { submitNetlifyForm } from "@/lib/netlify-forms"
 
 export function BookingForm() {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setStatus("loading")
+
+    try {
+      await submitNetlifyForm(event.currentTarget)
+      setStatus("success")
+      event.currentTarget.reset()
+    } catch (error) {
+      console.error(error)
+      setStatus("error")
+    }
+  }
+
   return (
     <section id="booking" className="py-24 bg-primary relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
@@ -69,6 +88,7 @@ export function BookingForm() {
               method="POST"
               data-netlify="true"
               netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
               className="bg-white rounded-3xl shadow-2xl p-8 sm:p-10"
             >
               <input type="hidden" name="form-name" value="booking" />
@@ -210,6 +230,7 @@ export function BookingForm() {
                   type="submit"
                   size="lg"
                   className="w-full bg-accent hover:bg-accent/90 text-white rounded-full py-7 text-lg font-sans font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all"
+                  disabled={status === "loading"}
                 >
                   Submit Booking Request
                 </Button>
@@ -217,6 +238,19 @@ export function BookingForm() {
                 <p className="text-center text-sm text-muted-foreground font-sans">
                   We'll confirm your session within 24 hours. Your first lesson is always FREE!
                 </p>
+                <div className="mt-2 text-center text-sm font-semibold">
+                  {status === "success" && (
+                    <span className="text-emerald-400">Thanks! We'll be in touch shortly.</span>
+                  )}
+                  {status === "error" && (
+                    <span className="text-rose-400">
+                      Something went wrong. Please try again in a moment.
+                    </span>
+                  )}
+                  {status === "loading" && (
+                    <span className="text-muted-foreground">Submitting…</span>
+                  )}
+                </div>
               </div>
             </form>
           </div>
